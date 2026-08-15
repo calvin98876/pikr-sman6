@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIK-R SMANSIX — Pendaftaran</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="brand"><img src="logo-pikr.png" alt="Logo PIK-R SMANSIX"><span>PIK-R SMANSIX</span></div>
+  <nav>
+    <a href="#home">Beranda</a>
+    <a href="#daftar">Pendaftaran</a>
+    <a href="admin.html">Panel Admin</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="hero-copy">
+    <div class="eyebrow">PUSAT INFORMASI DAN KONSELING REMAJA</div>
+    <h1>JOIN<br><span>PIK-R SMANSIX</span></h1>
+    <p>Tempat untuk bertumbuh, berbagi, berkarya, dan menjadi bagian dari remaja yang aktif dan inspiratif.</p>
+    <a class="btn" href="#daftar">Daftar Sekarang →</a>
+  </div>
+  <div class="hero-card"><img src="logo-pikr.png" class="hero-logo" alt="Logo PIK-R SMANSIX"><strong>2026</strong></div>
+</section>
+
+<section class="info">
+  <div><b>01</b><h3>Informasi</h3><p>Dapatkan informasi positif dan bermanfaat bagi remaja.</p></div>
+  <div><b>02</b><h3>Konseling</h3><p>Ruang aman untuk berbagi dan berdiskusi dengan bijak.</p></div>
+  <div><b>03</b><h3>Pengembangan</h3><p>Kembangkan kemampuan, kreativitas, dan pengalaman organisasi.</p></div>
+</section>
+
+<section class="register" id="daftar">
+  <div class="section-title">
+    <div class="eyebrow">OPEN RECRUITMENT</div>
+    <h2>Form Pendaftaran</h2>
+    <p>Isi data berikut untuk mendaftar sebagai anggota PIK-R SMANSIX.</p>
+  </div>
+  <form id="form">
+    <label>Nama Lengkap<input id="nama" required placeholder="Contoh: Kevin Adi"></label>
+    <label>Kelas<select id="kelas" required><option value="">Pilih kelas</option><option>X</option><option>XI</option><option>XII</option></select></label>
+    <label>No. WhatsApp<input id="wa" required placeholder="08xxxxxxxxxx"></label>
+    <label>Alasan Bergabung<textarea id="alasan" required placeholder="Tuliskan alasan kamu..."></textarea></label>
+    <button class="btn" type="submit">Kirim Pendaftaran</button>
+    <div id="success" class="success"></div>
+  </form>
+</section>
+</main>
+<footer>© 2026 PIK-R SMANSIX</footer>
+<script>
+const form=document.getElementById('form');
+form.addEventListener('submit',e=>{
+ e.preventDefault();
+ const data={nama:nama.value,kelas:kelas.value,wa:wa.value,alasan:alasan.value,waktu:new Date().toLocaleString('id-ID')};
+ const list=JSON.parse(localStorage.getItem('pikr_demo')||'[]');
+ list.unshift(data); localStorage.setItem('pikr_demo',JSON.stringify(list));
+ form.reset(); document.getElementById('success').textContent='✓ Pendaftaran berhasil! Data masuk ke preview Panel Admin.';
+});
+</script>
+</body>
+</html>

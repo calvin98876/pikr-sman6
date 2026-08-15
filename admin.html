@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Panel Admin — PIK-R SMANSIX</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="nav"><div class="brand"><img src="logo-pikr.png" alt="Logo PIK-R SMANSIX"><span>PIK-R SMANSIX</span></div><nav><a href="index.html">← Website</a></nav></header>
+<main class="admin">
+<div id="loginBox" style="max-width:430px;margin:70px auto;text-align:center;background:white;padding:32px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.08)">
+<div class="eyebrow">PRIVATE AREA</div><h1>Panel Admin</h1><p>Masukkan password untuk melanjutkan.</p>
+<input id="password" type="password" placeholder="Password admin" style="width:100%;box-sizing:border-box;padding:14px;border:1px solid #ddd;border-radius:10px;margin:15px 0">
+<button onclick="login()" style="width:100%;padding:14px;border:0;border-radius:10px;cursor:pointer">Masuk</button>
+<p id="error" style="color:#d33;display:none;margin-top:12px">Password salah.</p>
+</div>
+<div id="panel" style="display:none">
+<div class="admin-head"><div><div class="eyebrow">PRIVATE AREA</div><h1>Panel Admin</h1><p>Daftar peserta yang masuk.</p></div><div class="stat"><strong id="total">0</strong><small>Total Pendaftar</small></div></div>
+<div class="toolbar"><input id="search" placeholder="Cari nama..."><select id="filter"><option value="">Semua kelas</option><option>X</option><option>XI</option><option>XII</option></select><button class="danger" onclick="clearAll()">Hapus Semua</button></div>
+<div class="table-wrap"><table><thead><tr><th>No</th><th>Nama</th><th>Kelas</th><th>WhatsApp</th><th>Alasan</th><th>Waktu</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+<p class="note">Data preview tersimpan di browser ini.</p>
+</div></main>
+<script>
+const ADMIN_PASSWORD="PIKR2026";
+function login(){if(document.getElementById("password").value===ADMIN_PASSWORD){document.getElementById("loginBox").style.display="none";document.getElementById("panel").style.display="block";sessionStorage.setItem("pikr_admin","1");render()}else document.getElementById("error").style.display="block";}
+if(sessionStorage.getItem("pikr_admin")==="1"){document.getElementById("loginBox").style.display="none";document.getElementById("panel").style.display="block";}
+document.getElementById("password").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
+let data=JSON.parse(localStorage.getItem('pikr_demo')||'[]');
+const rows=document.getElementById('rows'), total=document.getElementById('total'), search=document.getElementById('search'), filter=document.getElementById('filter');
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function render(){
+ const q=search.value.toLowerCase(), f=filter.value;
+ const view=data.filter(x=>(x.nama||'').toLowerCase().includes(q)&&(!f||x.kelas===f));
+ total.textContent=data.length;
+ rows.innerHTML=view.length?view.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.nama)}</b></td><td>${esc(x.kelas)}</td><td>${esc(x.wa)}</td><td>${esc(x.alasan)}</td><td>${esc(x.waktu)}</td><td><button class="small-danger" onclick="removeItem(${data.indexOf(x)})">Hapus</button></td></tr>`).join(''):`<tr><td colspan="7" class="empty">Belum ada pendaftar. Coba isi form di halaman website.</td></tr>`;
+}
+function removeItem(i){if(confirm('Hapus data ini?')){data.splice(i,1);localStorage.setItem('pikr_demo',JSON.stringify(data));render()}}
+function clearAll(){if(confirm('Hapus semua data demo?')){data=[];localStorage.removeItem('pikr_demo');render()}}
+search.oninput=render;filter.onchange=render;render();
+</script>
+</body>
+</html>
